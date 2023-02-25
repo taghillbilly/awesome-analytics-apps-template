@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: awesome-analytics-app-template
+  namespace: <your-name-space-here>
+  labels:
+    app: awesome-analytics-app-template
+    env: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: awesome-analytics-app-template
+  template:
+    metadata:
+      labels:
+        app: awesome-analytics-app-template
+        env: prod
+    spec:
+      containers:
+      - name: awesome-analytics-app-template
+        image: registry.hub.docker.com/awesome-analytics-apps-template:latest
+        ports:
+        - containerPort: 5007
+        resources:
+          requests:
+            memory: "0.5Gi"
+            cpu: "0.5"
+          limits:
+            memory: "4Gi"
+            cpu: "4.0"
+        command:
+          - python
+        env:
+          - name: BOKEH_ALLOW_WS_ORIGIN
+            value: <your-domain.com>
+        args:
+          - src/site.py
